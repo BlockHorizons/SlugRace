@@ -343,7 +343,7 @@
         "pivot": [ -6, 14.5, 1 ],
         "neverRender": true,
         "name": "rightItem",
-        "parent": "rightArm",
+        "parent": "rightArm"
       },
 
       {
