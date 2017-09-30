@@ -1,0 +1,8 @@
+---
+name: SlugRace
+version: 0.1
+author: BlockHorizons
+api:
+- 3.0.0-ALPHA8
+- 3.0.0-ALPHA9
+main: BlockHorizons\SlugRace\SluggishLoader

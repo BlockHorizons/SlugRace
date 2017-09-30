@@ -4,36 +4,32 @@ declare(strict_types = 1);
 
 namespace BlockHorizons\SlugRace\Model;
 
-use pocketmine\entity\Skin;
+use BlockHorizons\SlugRace\Tasks\SnailConverterTask;
 use pocketmine\Player;
 
 class PlayerSnailConverter {
 
-	/** @var Player */
-	private $player = null;
-
-	public function __construct(Player $player) {
-		$this->player = $player;
-	}
-
-	/**
-	 * @return Player
-	 */
-	public function getPlayer(): Player {
-		return $this->player;
-	}
-
 	/**
 	 * Converts the player in this object to a snail.
 	 */
-	public function convertToSnail(): void {
-		$oldSkin = $this->player->getSkin();
-		$newSkin = new Skin($oldSkin->getSkinId(), $oldSkin->getSkinData(), $oldSkin->getCapeData(), 'snail_geometry_model', file_get_contents(__DIR__ . '\snail_model.json'));
-		$this->player->setSkin($newSkin);
-		$this->player->sendSkin($this->player->getServer()->getOnlinePlayers());
+	public function convertToSnail(Player $player): void {
+		$oldSkin = $player->getSkin();
+		$player->getServer()->getScheduler()->scheduleAsyncTask(new SnailConverterTask($player->getName(), $oldSkin->getSkinData(), file_get_contents(__DIR__ . '\snail_model.json'), $oldSkin->getCapeData()));
 	}
 
 	public function convertToSlug(): void {
 
+	}
+
+	/**
+	 * Reconstructs a player skin into a pixel representation.
+	 * This function is time extensive and should be used asynchronously.
+	 *
+	 * @param string $skinData
+	 *
+	 * @return PlayerSkin
+	 */
+	public function reconstructSkin(string $skinData): PlayerSkin {
+		return new PlayerSkin($skinData);
 	}
 }
