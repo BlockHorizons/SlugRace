@@ -11,10 +11,12 @@ class PlayerSnailConverter {
 
 	/**
 	 * Converts the player in this object to a snail.
+	 *
+	 * @param Player $player
 	 */
 	public function convertToSnail(Player $player): void {
 		$oldSkin = $player->getSkin();
-		$player->getServer()->getScheduler()->scheduleAsyncTask(new SnailConverterTask($player->getName(), $oldSkin->getSkinData(), file_get_contents(__DIR__ . '\snail_model.json'), $oldSkin->getCapeData()));
+		$player->getServer()->getScheduler()->scheduleAsyncTask(new SnailConverterTask($player->getName(), $oldSkin->getSkinData(), file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'snail_model.json'), $oldSkin->getCapeData()));
 	}
 
 	public function convertToSlug(): void {
