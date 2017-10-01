@@ -35,7 +35,7 @@ class SnailConverterTask extends AsyncTask{
                         $skin->setRGB($index, random_int(50, 75), random_int(200, 230), random_int(50, 65));
                 }
                 foreach($skin->getBodyIndexes() as $index){
-                        $skin->setRGB($index, random_int(230, 250), random_int(130, 150), random_int(55, 70));
+                        $skin->setRGB($index, random_int(170, 190), random_int(120, 140), random_int(70, 85));
                 }
 
                 $this->setResult($skin->getRawData());
