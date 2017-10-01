@@ -1,0 +1,51 @@
+{
+  "name": "New Arena",
+  "world": "world",
+  "lobbyPosition": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "game": {
+    "maxDuration": 240,
+    "spawn": {
+      "snail": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "slug": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "finish": {
+      "snail": {
+        "minimum": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "maximum": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "slug": {
+        "minimum": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "maximum": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+
+    }
+  }
+}
