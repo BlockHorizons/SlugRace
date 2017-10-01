@@ -78,7 +78,7 @@ class Team{
                         if($this->getSnailCount() >= $this->maxSize) return self::JOIN_FAIL_GAME_FULL;
                         if($this->snailType != $snail->getType()) return self::JOIN_FAIL_INCOMPATIBLE_SNAIL;
                         $this->snails[$id] = $snail;
-                        return true;
+                        return self::JOIN_SUCCESS;
                 }
                 return self::JOIN_FAIL_GAME_FULL;
         }
