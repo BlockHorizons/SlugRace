@@ -8,6 +8,16 @@
   },
   "game": {
     "maxDuration": 240,
+    "count": {
+      "snail": {
+        "min": 2,
+        "max": 8
+      },
+      "slug": {
+        "min": 2,
+        "max": 8
+      }
+    },
     "spawn": {
       "snail": {
         "x": 0,
