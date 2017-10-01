@@ -27,7 +27,7 @@ class GameTickTask extends PluginTask{
          * @param int $currentTick
          *
          */
-        public function onRun(int $currentTick){
+        public function onRun(int $currentTick) : void{
 
         }
 }

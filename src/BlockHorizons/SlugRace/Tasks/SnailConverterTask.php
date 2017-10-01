@@ -8,7 +8,6 @@ use BlockHorizons\SlugRace\Model\PlayerSnailConverter;
 use pocketmine\entity\Skin;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
-use pocketmine\utils\BinaryStream;
 
 class SnailConverterTask extends AsyncTask{
 
@@ -42,7 +41,7 @@ class SnailConverterTask extends AsyncTask{
                 $this->setResult($skin->getRawData());
         }
 
-        public function onCompletion(Server $server){
+        public function onCompletion(Server $server) : void{
                 $player = $server->getPlayer($this->playerName);
                 if($player === null){
                         return;
