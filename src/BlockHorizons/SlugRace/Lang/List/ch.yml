@@ -1,0 +1,32 @@
+---
+join:
+  #used when the game client was trying to join is full
+  error-game-full: "&c看来此游戏已满.请尝试别的游戏."
+  error-already-playing: "&e您已经在玩这此游戏."
+  error-incompatible-snail: "&e您蜗牛类型不适合于此对队."
+  success: "&a{player}已加入此游戏."
+
+#The countdown can be customized
+#It does not have to be 10, 5, 3, 2, 1, it can also
+#be 9, 8, 7, etc.
+countdown:
+  10:
+    title: "&c10"
+    subtitle: "&e此游戏已在10秒开始!"
+  5:
+    title: "&b5"
+    subtitle: "&e此游戏已在5秒开始!"
+  3:
+    title: "&a3"
+    subtitle: "&e此游戏已在3秒开始!"
+  2:
+    title: "&a2"
+    subtitle: "&e此游戏已在2秒开始!"
+  1:
+    title: "&a1"
+    subtitle: "&e此游戏已在1秒开始!"
+
+start:
+  title: "&开始!!"
+  subtitle: "&e本比赛开始了!"
+...
