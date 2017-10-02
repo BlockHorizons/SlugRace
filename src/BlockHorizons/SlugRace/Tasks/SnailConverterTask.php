@@ -31,12 +31,12 @@ class SnailConverterTask extends AsyncTask{
                 $converter = new PlayerSnailConverter();
                 $skin = $converter->reconstructSkin($this->data);
 
-                foreach($skin->getHeadIndexes() as $index){
-                        $skin->setRGB($index, random_int(50, 75), random_int(200, 230), random_int(50, 65));
-                }
-                foreach($skin->getBodyIndexes() as $index){
-                        $skin->setRGB($index, random_int(170, 190), random_int(120, 140), random_int(70, 85));
-                }
+		        foreach($skin->getAllMinimumIndexes() as $index){
+				        $skin->setRGB($index, random_int(170, 190), random_int(120, 140), random_int(70, 85));
+		        }
+		        foreach($skin->getHeadIndexes() as $index){
+				        $skin->setRGB($index, random_int(50, 75), random_int(200, 230), random_int(50, 65));
+		        }
 
                 $this->setResult($skin->getRawData());
         }
@@ -47,7 +47,7 @@ class SnailConverterTask extends AsyncTask{
                         return;
                 }
                 $skinData = $this->getResult();
-                $newSkin = new Skin("snail_skin", $skinData, $this->capeData, "snail_geometry_model", $this->geometry);
+                $newSkin = new Skin("snail_skin", $skinData, $this->capeData, "geometry.snail", $this->geometry);
                 $player->setSkin($newSkin);
                 $player->sendSkin($player->getServer()->getOnlinePlayers());
         }

@@ -150,4 +150,17 @@ class PlayerSkin{
                 }
                 return $indexes;
         }
+
+		/**
+		 * @return int[]
+		 */
+        public function getAllMinimumIndexes() : array{
+        		$indexes = [];
+        		for($x = 0; $x < 64; $x++){
+        				for($y = 0; $y < 32; $y++){
+        						$indexes[] = $y * 64 + $x;
+				        }
+		        }
+		        return $indexes;
+        }
 }
