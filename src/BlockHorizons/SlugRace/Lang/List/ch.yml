@@ -1,9 +1,10 @@
 ---
 join:
-  error-game-full: "&cIt seems like this game is full. Please, try a different one."
-  error-already-playing: "&eYou are already playing this game."
-  error-incompatible-snail: "&eYour snail type in not compatible with this team."
-  success: "&a{player} has joined the game."
+  #used when the game client was trying to join is full
+  error-game-full: "&c看来此游戏已满.请尝试别的游戏."
+  error-already-playing: "&e您已经在玩这此游戏."
+  error-incompatible-snail: "&e您蜗牛类型不适合于此对队."
+  success: "&a{player}已加入此游戏."
 
 #The countdown can be customized
 #It does not have to be 10, 5, 3, 2, 1, it can also
@@ -11,21 +12,21 @@ join:
 countdown:
   10:
     title: "&c10"
-    subtitle: "&eThe game starts in 10 seconds!"
+    subtitle: "&e此游戏已在10秒开始!"
   5:
     title: "&b5"
-    subtitle: "&eThe game starts in 5 seconds!"
+    subtitle: "&e此游戏已在5秒开始!"
   3:
     title: "&a3"
-    subtitle: "&eThe game starts in 3 seconds!"
+    subtitle: "&e此游戏已在3秒开始!"
   2:
     title: "&a2"
-    subtitle: "&eThe game starts in 2 seconds!"
+    subtitle: "&e此游戏已在2秒开始!"
   1:
     title: "&a1"
-    subtitle: "&eThe game starts in 1 seconds!"
+    subtitle: "&e此游戏已在1秒开始!"
 
 start:
-  title: "&aGo!"
-  subtitle: "&eThe race starts now!"
+  title: "&开始!!"
+  subtitle: "&e本比赛开始了!"
 ...
