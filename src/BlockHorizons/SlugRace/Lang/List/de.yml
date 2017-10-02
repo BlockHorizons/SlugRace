@@ -1,0 +1,31 @@
+---
+join:
+  error-game-full: "&cIt seems like this game is full. Please, try a different one."
+  error-already-playing: "&eYou are already playing this game."
+  error-incompatible-snail: "&eYour snail type in not compatible with this team."
+  success: "&a{player} has joined the game."
+
+#The countdown can be customized
+#It does not have to be 10, 5, 3, 2, 1, it can also
+#be 9, 8, 7, etc.
+countdown:
+  10:
+    title: "&c10"
+    subtitle: "&eThe game starts in 10 seconds!"
+  5:
+    title: "&b5"
+    subtitle: "&eThe game starts in 5 seconds!"
+  3:
+    title: "&a3"
+    subtitle: "&eThe game starts in 3 seconds!"
+  2:
+    title: "&a2"
+    subtitle: "&eThe game starts in 2 seconds!"
+  1:
+    title: "&a1"
+    subtitle: "&eThe game starts in 1 seconds!"
+
+start:
+  title: "&aGo!"
+  subtitle: "&eThe race starts now!"
+...

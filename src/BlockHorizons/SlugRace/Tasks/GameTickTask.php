@@ -9,25 +9,27 @@ use pocketmine\scheduler\PluginTask;
 
 class GameTickTask extends PluginTask{
 
+        /** @var SluggishLoader */
+        private $loader = null;
+
         /**
          *
          * GameTickTask constructor.
          *
-         * @param SluggishLoader $owner
+         * @param SluggishLoader $loader
          *
          */
-        public function __construct(SluggishLoader $owner){
-                parent::__construct($owner);
+        public function __construct(SluggishLoader $loader){
+                $this->loader = $loader;
+                parent::__construct($loader);
         }
 
         /**
-         *
-         * TODO: tick all loaded games
          *
          * @param int $currentTick
          *
          */
         public function onRun(int $currentTick) : void{
-
+                $this->loader->getGameManager()->tickArenas();
         }
 }

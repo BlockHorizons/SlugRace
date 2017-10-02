@@ -7,10 +7,14 @@ namespace BlockHorizons\SlugRace\Game;
 use BlockHorizons\SlugRace\Data\ArenaConfiguration;
 use BlockHorizons\SlugRace\Exceptions\InvalidArenaStateException;
 use BlockHorizons\SlugRace\Game\Team\Team;
+use BlockHorizons\SlugRace\Lang\Translator;
 use BlockHorizons\SlugRace\SluggishLoader;
 use BlockHorizons\SlugRace\Snail;
+use BlockHorizons\SlugRace\Utils\StringUtils;
 
 class Arena{
+
+        private static $arenaCount = 0;
 
         const STATE_IDLE = 0;
         const STATE_AWAITING_PLAYERS = 1;
@@ -36,7 +40,7 @@ class Arena{
         public function __construct(SluggishLoader $loader){
                 $this->loader = $loader;
                 $this->arenaConfiguration = new ArenaConfiguration($this);
-                $this->arenaId = (time() + mt_rand(100, 999));
+                $this->arenaId = self::$arenaCount++;
                 $gameConf = $this->getArenaConfiguration()->getSetting('game', 8);
                 if(is_array($gameConf)){
                         $this->snailTeam = new Team($gameConf['count']['snail']['max'], Snail::TYPE_SNAIL, []);
@@ -149,6 +153,47 @@ class Arena{
 
         /**
          *
+         * @param string $message
+         *
+         */
+        public function broadcastMessage(string $message){
+                $this->loader->getServer()->broadcastMessage($message, array_merge($this->snailTeam->getSnails(), $this->slugTeam->getSnails()));
+        }
+
+        /**
+         *
+         * @param string $tip
+         *
+         */
+        public function broadcastTip(string $tip){
+                $this->loader->getServer()->broadcastTip($tip, array_merge($this->snailTeam->getSnails(), $this->slugTeam->getSnails()));
+        }
+
+        /**
+         *
+         * @param string $popup
+         *
+         */
+        public function broadcastPopup(string $popup){
+                $this->loader->getServer()->broadcastPopup($popup, array_merge($this->snailTeam->getSnails(), $this->slugTeam->getSnails()));
+        }
+
+        /**
+         *
+         * @param string $title
+         * @param string $subtitle
+         * @param int    $fadeIn
+         * @param int    $stayIn
+         * @param int    $fadeOut
+         *
+         */
+        public function broadcastTitle(string $title, string $subtitle, int $fadeIn = 1, int $stayIn = 1, int $fadeOut = 1){
+                $this->loader->getServer()->broadcastTitle($title, $subtitle, $fadeIn, $stayIn, $fadeOut, array_merge($this->snailTeam->getSnails(), $this->slugTeam->getSnails()));
+        }
+
+
+        /**
+         *
          * @param GameEntry $entry
          *
          */
@@ -158,16 +203,16 @@ class Arena{
 
                 switch($team->addSnail($snail)){
                         case Team::JOIN_FAIL_GAME_FULL:
-                                //TODO: send game full message
+                                $snail->getPlayer()->sendMessage(StringUtils::colorFormatter(Translator::getMessage('join.error-game-full')));
                                 break;
                         case Team::JOIN_FAIL_ALREADY_PLAYING:
-                                //TODO: send already playing message
+                                $snail->getPlayer()->sendMessage(StringUtils::colorFormatter(Translator::getMessage('join.error-already-playing')));
                                 break;
                         case Team::JOIN_FAIL_INCOMPATIBLE_SNAIL:
-                                //TODO: send incompatible snail message
+                                $snail->getPlayer()->sendMessage(StringUtils::colorFormatter(Translator::getMessage('join.error-incompatible-snail')));
                                 break;
                         case Team::JOIN_SUCCESS:
-                                //TODO: send join success message
+                                $this->broadcastMessage(StringUtils::colorFormatter(Translator::getMessage('join.success', '', ['{player}' => $snail->getPlayer()->getName()])));
                                 break;
                 }
         }

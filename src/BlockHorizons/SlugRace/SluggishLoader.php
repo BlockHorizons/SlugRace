@@ -4,17 +4,41 @@ declare(strict_types = 1);
 
 namespace BlockHorizons\SlugRace;
 
+use BlockHorizons\SlugRace\Lang\Translator;
 use BlockHorizons\SlugRace\Listeners\PlayerListener;
+use BlockHorizons\SlugRace\Manager\GameManager;
+use BlockHorizons\SlugRace\Manager\SignManager;
 use BlockHorizons\SlugRace\Tasks\GameTickTask;
+use BlockHorizons\SlugRace\Utils\StringUtils;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\PluginTask;
 
 class SluggishLoader extends PluginBase{
 
+        const AUTHORS = ['Sandertv', 'xBeastMode', 'BlockHorizons'];
+
+        /** @var GameManager */
+        private $gameManager = null;
+        /** @var SignManager */
+        private $signManager = null;
+
         public function onEnable(){
                 $this->registerCommands();
                 $this->registerListeners();
                 //$this->scheduleTasks();
+
+                $this->saveResource('config.yml');
+                if(!file_exists($this->getDataFolder() . 'arenas/')){
+                        mkdir($this->getDataFolder() . 'arenas/');
+                        file_put_contents($this->getDataFolder() . 'signs.dat', StringUtils::jsonCompress([]));
+                }
+
+                $this->gameManager = new GameManager();
+                $this->signManager = new SignManager($this, $this->getDataFolder() . 'signs.dat');
+
+                Translator::selectLang(((string)$this->getConfig()->get('language')));
+
+                $this->getLogger()->info(StringUtils::formatter(StringUtils::colorFormatter("&aPlugin by &e%1 &aand &e%2 &a@ &6%3"), ...self::AUTHORS));
         }
 
         public function onDisable(){
@@ -51,5 +75,14 @@ class SluggishLoader extends PluginBase{
                                 $repeatingTask->setHandler($handler);
                         }
                 }
+        }
+
+        /**
+         *
+         * @return GameManager
+         *
+         */
+        public function getGameManager() : GameManager{
+                return $this->gameManager;
         }
 }

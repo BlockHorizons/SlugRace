@@ -1,0 +1,31 @@
+---
+join:
+  error-game-full: "&cParece que este juego esta lleno. Por favor, intenta ingresar a otro."
+  error-already-playing: "&eYa estas en este juego."
+  error-incompatible-snail: "&eTu caracol no es compatible con este equipo."
+  success: "&a{player} ha entrado al juego."
+
+#El conteo puede personalizarse a cualquier numero
+#No tiene que ser solamente 10, 5, 3, 2, 1, tambien puede
+#Ser 9, 8, 7, etc.
+countdown:
+  10:
+    title: "&c10"
+    subtitle: "&eEl juego comienza en 10 segundos!"
+  5:
+    title: "&b5"
+    subtitle: "&eEl juego comienza en 5 segundos!"
+  3:
+    title: "&a3"
+    subtitle: "&eEl juego comienza en 3 segundos!"
+  2:
+    title: "&a2"
+    subtitle: "&eEl juego comienza en 2 segundos!"
+  1:
+    title: "&a1"
+    subtitle: "&eEl juego comienza en 1 segundo!"
+
+start:
+  title: "&aYa!"
+  subtitle: "&eComienza la carrera!"
+...
