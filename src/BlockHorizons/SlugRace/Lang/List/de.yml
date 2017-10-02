@@ -1,9 +1,9 @@
 ---
 join:
-  error-game-full: "&cIt seems like this game is full. Please, try a different one."
-  error-already-playing: "&eYou are already playing this game."
-  error-incompatible-snail: "&eYour snail type in not compatible with this team."
-  success: "&a{player} has joined the game."
+  error-game-full: "&cEs sieht so aus, dass das Spiel schon voll ist. Versuche bitte ein anderes Spiel."
+  error-already-playing: "&eDu spielst dieses Spiel schon!"
+  error-incompatible-snail: "&eDeine Schnecke ist nicht kompatibel mit diesem Team."
+  success: "&a{player} hat das Spiel betreten."
 
 #The countdown can be customized
 #It does not have to be 10, 5, 3, 2, 1, it can also
@@ -11,21 +11,21 @@ join:
 countdown:
   10:
     title: "&c10"
-    subtitle: "&eThe game starts in 10 seconds!"
+    subtitle: "&eDas Spiel fängt in 10 Sekunden an!"
   5:
     title: "&b5"
-    subtitle: "&eThe game starts in 5 seconds!"
+    subtitle: "&eDas Spiel fängt in 5 Sekunden an!"
   3:
     title: "&a3"
-    subtitle: "&eThe game starts in 3 seconds!"
+    subtitle: "&eDas Spiel fängt in 3 Sekunden an!"
   2:
     title: "&a2"
-    subtitle: "&eThe game starts in 2 seconds!"
+    subtitle: "&eDas Spiel fängt in 2 Sekunden an!"
   1:
     title: "&a1"
-    subtitle: "&eThe game starts in 1 seconds!"
+    subtitle: "&eDas Spiel fängt in 1 Sekunde an!"
 
 start:
   title: "&aGo!"
-  subtitle: "&eThe race starts now!"
+  subtitle: "&eDas Rennen beginnt!"
 ...
