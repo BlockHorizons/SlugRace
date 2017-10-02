@@ -42,7 +42,7 @@ class SnailConverterTask extends AsyncTask{
         }
 
         public function onCompletion(Server $server) : void{
-                $player = $server->getPlayer($this->playerName);
+                $player = $server->getPlayerExact($this->playerName);
                 if($player === null){
                         return;
                 }
