@@ -36,6 +36,10 @@ class Arena{
 
         /** @var int */
         private $state = self::STATE_IDLE;
+        /** @var GameEntry[] */
+        private $entries = [];
+
+        private $counter = 0;
 
         public function __construct(SluggishLoader $loader){
                 $this->loader = $loader;
@@ -48,6 +52,10 @@ class Arena{
                 }else{
                         $this->snailTeam = new Team($gameConf, Snail::TYPE_SNAIL, []);
                         $this->slugTeam = new Team($gameConf, Snail::TYPE_SLUG, []);
+                }
+                $maxSize = $this->snailTeam->getMaxSize() + $this->slugTeam->getMaxSize();
+                for($i = 0; $i < $maxSize; $i++){
+                		$this->entries[] = new GameEntry();
                 }
         }
 
@@ -217,11 +225,46 @@ class Arena{
                 }
         }
 
+		/**
+		 * @param Snail $snail
+		 *
+		 * @return bool
+		 */
+        public function attemptJoin(Snail $snail) : bool{
+        		foreach($this->entries as $entry){
+        				if($entry->isAssigned()){
+        						continue;
+				        }
+				        $entry->assignSnail($snail);
+				        return true;
+		        }
+		        return true;
+        }
+
+		/**
+		 * @return bool
+		 */
+        public function startRunning() : bool{
+        		$snailCount = 0;
+        		foreach($this->entries as $entry){
+        				if($entry->isAssigned()){
+        						$this->handleGameEntry($entry);
+        						$snailCount++;
+        						break;
+				        }
+		        }
+		        if($snailCount < 2){
+        				return false;
+		        }
+		        return true;
+        }
+
         /**
          *
          * TODO: runtime logic and refresh signs
          *
          */
         public function doTick(){
+			$this->counter++;
         }
 }

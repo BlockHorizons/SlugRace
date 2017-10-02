@@ -26,10 +26,17 @@ class Team{
          * @param array $defaultSnails
          *
          */
-        public function __construct(int $maxSize, int $type, array $defaultSnails = []){
-                $this->maxSize = $maxSize;
-                $this->snailType = $type;
-                $this->snails = $defaultSnails;
+        public function __construct(int $maxSize, int $type, array $defaultSnails = []) {
+		        $this->maxSize = $maxSize;
+		        $this->snailType = $type;
+		        $this->snails = $defaultSnails;
+        }
+
+		/**
+		 * @return int
+		 */
+        public function getMaxSize() : int{
+        		return $this->maxSize;
         }
 
         /**
