@@ -8,28 +8,6 @@ final class StringUtils{
 
         /**
          *
-         * @param array $data
-         *
-         * @return string
-         *
-         */
-        public static function jsonCompress(array $data) : string{
-                return gzencode(json_encode($data));
-        }
-
-        /**
-         *
-         * @param string $data
-         *
-         * @return array
-         *
-         */
-        public static function jsonDecompress(string $data) : array{
-                return json_decode(gzdecode($data), true);
-        }
-
-        /**
-         *
          * @param string $string
          * @param array  $params
          *
@@ -56,4 +34,5 @@ final class StringUtils{
         public static function colorFormatter(string $message, string $replacerSymbol = "&") : string{
                 return str_replace($replacerSymbol, TextFormat::ESCAPE, $message);
         }
+
 }

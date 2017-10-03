@@ -6,7 +6,7 @@ join:
   success: "&a{player} ha entrado al juego."
 
 #El conteo puede personalizarse a cualquier numero
-#No tiene que ser solamente 10, 5, 3, 2, 1, tambien puede
+#No necesariamente debe de ser 10, 5, 3, 2, 1, tambien puede
 #Ser 9, 8, 7, etc.
 countdown:
   10:
@@ -28,4 +28,6 @@ countdown:
 start:
   title: "&aYa!"
   subtitle: "&eComienza la carrera!"
+
+quit: "&c{player} has salido del juego."
 ...

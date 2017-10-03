@@ -28,4 +28,6 @@ countdown:
 start:
   title: "&aGo!"
   subtitle: "&eThe race starts now!"
+
+quit: "&c{player} has quit the game."
 ...

@@ -29,4 +29,6 @@ countdown:
 start:
   title: "&开始!!"
   subtitle: "&e本比赛开始了!"
+
+quit: "&c{player} has quit the game."
 ...

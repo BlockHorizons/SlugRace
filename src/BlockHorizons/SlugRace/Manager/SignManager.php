@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace BlockHorizons\SlugRace\Manager;
 
 use BlockHorizons\SlugRace\SluggishLoader;
+use BlockHorizons\SlugRace\Utils\JsonCompressor;
 use BlockHorizons\SlugRace\Utils\StringUtils;
 use pocketmine\math\Vector3;
 use pocketmine\tile\Sign;
@@ -41,7 +42,7 @@ class SignManager implements Manager{
         public function __construct(SluggishLoader $loader, string $signsFile){
                 $this->loader = $loader;
                 $this->signsFile = $signsFile;
-                $this->parseSigns(StringUtils::jsonDecompress(file_get_contents($signsFile)));
+                $this->parseSigns(JsonCompressor::decompress(file_get_contents($signsFile)));
         }
 
         /**
@@ -69,7 +70,7 @@ class SignManager implements Manager{
                         }
                 }
 
-                file_put_contents($this->signsFile, StringUtils::jsonCompress($data));
+                file_put_contents($this->signsFile, JsonCompressor::compress($data));
         }
 
         /**

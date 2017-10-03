@@ -6,11 +6,13 @@ namespace BlockHorizons\SlugRace\Manager;
 
 use BlockHorizons\SlugRace\Exceptions\InvalidArenaStateException;
 use BlockHorizons\SlugRace\Game\Arena;
-
+use BlockHorizons\SlugRace\Snail;
 class GameManager implements Manager{
 
         /** @var Arena[] */
         protected $arenas = [];
+        /** @var int[] */
+        protected $snailCache = [];
 
         /**
          *
@@ -19,6 +21,67 @@ class GameManager implements Manager{
          */
         public function getName() : string{
                 return static::class;
+        }
+
+        /**
+         *
+         * @param Snail $snail
+         *
+         * @param int $arenaId
+         *
+         * @return bool
+         *
+         */
+        public function cacheSnail(Snail $snail, int $arenaId) : bool{
+                if(!$this->quickCheckIsPlaying($snail)){
+                        $id = $snail->getPlayer()->getPlayer()->getUniqueId()->toString();
+                        $this->snailCache[$id] = $arenaId;
+                        return true;
+                }
+                return false;
+        }
+
+        /**
+         *
+         * @param Snail $snail
+         *
+         * @return  bool
+         *
+         */
+        public function discardSnail(Snail $snail) : bool{
+                if($this->quickCheckIsPlaying($snail)){
+                        $id = $snail->getPlayer()->getPlayer()->getUniqueId()->toString();
+                        unset($this->snailCache[$id]);
+                        return true;
+                }
+                return false;
+        }
+
+        /**
+         *
+         * @param Snail $snail
+         *
+         * @return bool
+         *
+         */
+        public function quickCheckIsPlaying(Snail $snail) : bool{
+                $id = $snail->getPlayer()->getPlayer()->getUniqueId()->toString();
+                return isset($this->snailCache[$id]);
+        }
+
+        /**
+         *
+         * @param Snail $snail
+         *
+         * @return null|Arena
+         *
+         */
+        public function getSnailGame(Snail $snail){
+                if($this->quickCheckIsPlaying($snail)){
+                        $id = $snail->getPlayer()->getPlayer()->getUniqueId()->toString();
+                        return $this->getArenaById($this->snailCache[$id]);
+                }
+                return null;
         }
 
         /**

@@ -32,6 +32,15 @@ class Team{
 		        $this->snails = $defaultSnails;
         }
 
+        /**
+         *
+         * @return int
+         *
+         */
+        public function getSnailType() : int{
+                return $this->snailType;
+        }
+
 		/**
 		 * @return int
 		 */
@@ -71,6 +80,26 @@ class Team{
 
         /**
          *
+         * @return bool
+         *
+         */
+        public function isFull() : bool{
+                return ($this->getSnailCount() >= $this->maxSize);
+        }
+
+        /**
+         *
+         * @param Snail $snail
+         *
+         * @return bool
+         *
+         */
+        public function isCompatible(Snail $snail) : bool{
+                return ($snail->getType() == $this->getSnailType());
+        }
+
+        /**
+         *
          * @param Snail $snail
          *
          * @return bool
@@ -82,8 +111,8 @@ class Team{
                         if(!$snail->checkValid()){
                                 throw new InvalidSnailException("Player of given snail is not online.");
                         }
-                        if($this->getSnailCount() >= $this->maxSize) return self::JOIN_FAIL_GAME_FULL;
-                        if($this->snailType != $snail->getType()) return self::JOIN_FAIL_INCOMPATIBLE_SNAIL;
+                        if($this->isFull()) return self::JOIN_FAIL_GAME_FULL;
+                        if(!$this->isCompatible($snail)) return self::JOIN_FAIL_INCOMPATIBLE_SNAIL;
                         $this->snails[$id] = $snail;
                         return self::JOIN_SUCCESS;
                 }

@@ -11,6 +11,7 @@ use BlockHorizons\SlugRace\Lang\Translator;
 use BlockHorizons\SlugRace\SluggishLoader;
 use BlockHorizons\SlugRace\Snail;
 use BlockHorizons\SlugRace\Utils\StringUtils;
+use pocketmine\level\Position;
 
 class Arena{
 
@@ -25,7 +26,7 @@ class Arena{
         /** @var ArenaConfiguration */
         private $arenaConfiguration = null;
         /** @var string */
-        private $arenaName = "";
+        public $arenaName = "";
         /** @var int */
         private $arenaId = 0;
 
@@ -36,9 +37,9 @@ class Arena{
 
         /** @var int */
         private $state = self::STATE_IDLE;
-        /** @var GameEntry[] */
-        private $entries = [];
-
+        /** @var Position */
+        protected $positionHandler = null;
+        /** @var int */
         private $counter = 0;
 
         public function __construct(SluggishLoader $loader){
@@ -53,28 +54,30 @@ class Arena{
                         $this->snailTeam = new Team($gameConf, Snail::TYPE_SNAIL, []);
                         $this->slugTeam = new Team($gameConf, Snail::TYPE_SLUG, []);
                 }
-                $maxSize = $this->snailTeam->getMaxSize() + $this->slugTeam->getMaxSize();
-                for($i = 0; $i < $maxSize; $i++){
-                		$this->entries[] = new GameEntry();
-                }
         }
 
         /**
+         *
          * @return SluggishLoader
+         *
          */
         public function getLoader() : SluggishLoader{
                 return $this->loader;
         }
 
         /**
+         *
          * @return ArenaConfiguration
+         *
          */
         public function getArenaConfiguration() : ArenaConfiguration{
                 return $this->arenaConfiguration;
         }
 
         /**
+         *
          * @return int
+         *
          */
         public function getState() : int{
                 return $this->state;
@@ -93,23 +96,29 @@ class Arena{
         }
 
         /**
+         *
          * @param bool $literal
          *
          * @return bool
+         *
          */
         public function isRunning(bool $literal = false) : bool{
                 return ($literal ? $this->state === self::STATE_RUNNING : $this->state !== self::STATE_IDLE);
         }
 
         /**
+         *
          * @return string
+         *
          */
         public function getName() : string{
                 return $this->arenaName;
         }
 
         /**
+         *
          * @param string $arenaName
+         *
          */
         public function setName(string $arenaName) : void{
                 $this->arenaName = $arenaName;
@@ -161,11 +170,40 @@ class Arena{
 
         /**
          *
+         * @return Snail[]
+         *
+         */
+        public function getMergedSnails() : array{
+                return array_merge($this->getSnailTeam()->getSnails(), $this->getSlugTeam()->getSnails());
+        }
+
+        /**
+         *
+         * @param Snail $snail
+         *
+         * @return bool
+         *
+         */
+        public function isPlaying(Snail $snail) : bool{
+                return $this->getTeam($snail->getType())->snailInGame($snail);
+        }
+
+        /**
+         *
+         * @return Position
+         *
+         */
+        public function getPositionHandler() : Position{
+                return $this->positionHandler;
+        }
+
+        /**
+         *
          * @param string $message
          *
          */
         public function broadcastMessage(string $message){
-                $this->loader->getServer()->broadcastMessage($message, array_merge($this->snailTeam->getSnails(), $this->slugTeam->getSnails()));
+                $this->loader->getServer()->broadcastMessage($message, $this->getMergedSnails());
         }
 
         /**
@@ -174,7 +212,7 @@ class Arena{
          *
          */
         public function broadcastTip(string $tip){
-                $this->loader->getServer()->broadcastTip($tip, array_merge($this->snailTeam->getSnails(), $this->slugTeam->getSnails()));
+                $this->loader->getServer()->broadcastTip($tip, $this->getMergedSnails());
         }
 
         /**
@@ -183,7 +221,7 @@ class Arena{
          *
          */
         public function broadcastPopup(string $popup){
-                $this->loader->getServer()->broadcastPopup($popup, array_merge($this->snailTeam->getSnails(), $this->slugTeam->getSnails()));
+                $this->loader->getServer()->broadcastPopup($popup, $this->getMergedSnails());
         }
 
         /**
@@ -196,19 +234,16 @@ class Arena{
          *
          */
         public function broadcastTitle(string $title, string $subtitle, int $fadeIn = 1, int $stayIn = 1, int $fadeOut = 1){
-                $this->loader->getServer()->broadcastTitle($title, $subtitle, $fadeIn, $stayIn, $fadeOut, array_merge($this->snailTeam->getSnails(), $this->slugTeam->getSnails()));
+                $this->loader->getServer()->broadcastTitle($title, $subtitle, $fadeIn, $stayIn, $fadeOut, $this->getMergedSnails());
         }
 
-
         /**
+         * @param Snail $snail
          *
-         * @param GameEntry $entry
-         *
+         * @return void
          */
-        public function handleGameEntry(GameEntry $entry) : void{
-                $snail = $entry->getSnail();
+        public function addSnail(Snail $snail) : void{
                 $team = $this->getTeam($snail->getType());
-
                 switch($team->addSnail($snail)){
                         case Team::JOIN_FAIL_GAME_FULL:
                                 $snail->getPlayer()->sendMessage(StringUtils::colorFormatter(Translator::getMessage('join.error-game-full')));
@@ -225,39 +260,13 @@ class Arena{
                 }
         }
 
-		/**
-		 * @param Snail $snail
-		 *
-		 * @return bool
-		 */
-        public function attemptJoin(Snail $snail) : bool{
-        		foreach($this->entries as $entry){
-        				if($entry->isAssigned()){
-        						continue;
-				        }
-				        $entry->assignSnail($snail);
-				        return true;
-		        }
-		        return true;
+        public function removeSnail(Snail $snail){
+                if($this->isPlaying($snail)){
+                        $this->getTeam($snail->getType())->removeSnail($snail);
+                        $this->broadcastMessage(StringUtils::colorFormatter(Translator::getMessage('quit', '', ['{player}' => $snail->getPlayer()->getName()])));
+                }
         }
 
-		/**
-		 * @return bool
-		 */
-        public function startRunning() : bool{
-        		$snailCount = 0;
-        		foreach($this->entries as $entry){
-        				if($entry->isAssigned()){
-        						$this->handleGameEntry($entry);
-        						$snailCount++;
-        						break;
-				        }
-		        }
-		        if($snailCount < 2){
-        				return false;
-		        }
-		        return true;
-        }
 
         /**
          *

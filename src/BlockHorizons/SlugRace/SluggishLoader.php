@@ -9,6 +9,7 @@ use BlockHorizons\SlugRace\Listeners\PlayerListener;
 use BlockHorizons\SlugRace\Manager\GameManager;
 use BlockHorizons\SlugRace\Manager\SignManager;
 use BlockHorizons\SlugRace\Tasks\GameTickTask;
+use BlockHorizons\SlugRace\Utils\JsonCompressor;
 use BlockHorizons\SlugRace\Utils\StringUtils;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\PluginTask;
@@ -30,12 +31,18 @@ class SluggishLoader extends PluginBase{
                 $this->saveResource('config.yml');
                 if(!file_exists($this->getDataFolder() . 'arenas/')){
                         mkdir($this->getDataFolder() . 'arenas/');
-                        file_put_contents($this->getDataFolder() . 'signs.dat', StringUtils::jsonCompress([]));
+                }
+                if(!file_exists($this->getDataFolder() . 'signs.dat')){
+                        file_put_contents($this->getDataFolder() . 'signs.dat', JsonCompressor::compress([]));
+                }
+                if(!file_exists($this->getDataFolder() . 'lang/')){
+                        mkdir($this->getDataFolder() . 'lang/');
                 }
 
                 $this->gameManager = new GameManager();
                 $this->signManager = new SignManager($this, $this->getDataFolder() . 'signs.dat');
 
+                Translator::setLanguagePath($this->getDataFolder().'lang/');
                 Translator::selectLang(((string)$this->getConfig()->get('language')));
 
                 $this->getLogger()->info(StringUtils::formatter(StringUtils::colorFormatter("&aPlugin by &e%1 &aand &e%2 &a@ &6%3"), ...self::AUTHORS));
@@ -84,5 +91,14 @@ class SluggishLoader extends PluginBase{
          */
         public function getGameManager() : GameManager{
                 return $this->gameManager;
+        }
+
+        /**
+         *
+         * @return SignManager
+         *
+         */
+        public function getSignManager() : SignManager{
+                return $this->signManager;
         }
 }
